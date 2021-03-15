@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css"
+      rel="stylesheet"
+    />
+    <link rel="apple-touch-icon" sizes="180x180" href="{{url_for('static', filename='favicon/apple-touch-icon.png')}}">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{url_for('static', filename='favicon/favicon-32x32.png')}}">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{url_for('static', filename='favicon/favicon-16x16.png')}}">
+    <link rel="manifest" href="{{url_for('static', filename='favicon/site.webmanifest')}}">
+    <title>
+      {% if title %}
+      {{ title }}
+      {% else %} Honey Bank
+      {% endif %}
+    </title>
+  </head>
+  <body class="">
+
+
+<nav class="bg-indigo-300">
+  <div class="max-w-7xl mx-auto px-2 sm:px-6 lg:px-8">
+    <div class="relative flex items-center justify-between h-16">
+      <div class="flex-1 flex items-center justify-center sm:items-stretch sm:justify-middle">
+        <div class="flex-shrink-0 flex items-center ml-40">
+            <p class="invisible lg:visible text-white text-2xl">Honey Bank</p>
+        </div>
+      </div>
+      <div class="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
+            <a href="http://localhost:5000/" class="text-white hover:bg-indigo-400 text-white px-5 py-2 rounded-sm text-sm font-medium">Home</a>
+
+            {% if session["user"] %}
+                <a href="http://localhost:5000/user/signout" class="text-white hover:bg-indigo-400 hover:text-white px-5 py-2 rounded-sm text-sm font-medium">Logout</a>
+
+            {% else %}
+              <a href="http://localhost:5000/user/login" class="text-white hover:bg-indigo-400 hover:text-white px-5 py-2 rounded-sm text-sm font-medium">Sign in</a>
+
+            {% endif %}
+        </button>
+
+      </div>
+    </div>
+  </div>
+
+</nav>
+
+
+    <div
+      class="h-100 w-full flex items-center justify-center bg-teal-lightest font-sans"
+    >
+    <div class="container mx-auto px-4">
+      {% block content %}
+
+      {% endblock content %}
+    </div>
+    </div>
+  </body>
+</html>

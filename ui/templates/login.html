@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="rounded px-8 pt-6 pb-8 mb-4 flex flex-col mt-20 mx-auto max-w-lg">
+<form id="log-form">
+    <div class="mb-4">
+      <label class="block text-grey-darker text-sm  mb-2" for="username">
+        Email
+      </label>
+      <input class="shadow-xs appearance-none rounded w-full py-2 px-3 text-grey-darker" id="email" name="email" type="text" placeholder="Email">
+    </div>
+    <div class="mb-6">
+      <label class="block text-grey-darker text-sm  mb-2" for="password">
+        Password
+      </label>
+      <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}"/><input class="shadow-xs appearance-none border-red rounded w-full py-2 px-3 text-grey-darker mb-3" name="password" id="password" type="password" placeholder="******************">
+        <a class="inline-block align-baseline text-sm text-yellow-600 hover:text-yellow-600" href="reset">
+        Forgot Your Password
+      </a> <p class="text-red-700" id="password-error"></p>
+    </div>
+    <div class="flex items-center justify-start">
+      <button id="submit-btn" class="bg-indigo-300 hover:bg-indigo-600 text-white py-2 px-4 rounded mr-4" type="button">
+        Sign In
+      </button>
+      <a href="http://localhost:5000/user/register"><button class="bg-indigo-300 hover:bg-indigo-600 text-white py-2 px-4 rounded" type="button">
+        Register
+      </button></a>
+</div></form>
+</div>
+<script src="{{url_for('static', filename='js/ajax.js')}}"></script>
+<script src="{{url_for('static', filename='js/login.js')}}"></script>
+{% endblock content %}

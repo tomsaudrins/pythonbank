@@ -1,0 +1,80 @@
+{% extends "base.html" %} {% block content %}
+
+<div class="w-full border-b border-gray-200 rounded-md shadow-sm p-4 mt-10 ">
+    <div class="grid grid-cols-4 gap-4 text-gray-600">
+        <div class="p-10 space-y-10 font-medium ">
+            <p class="block">Type: <span class="font-normal">{{transaction["type"]}}</span></p>
+            <p class="block">Status: <span class="font-normal text-green-300">Completed</span></p>
+        </div>
+        <div class="p-10 space-y-10 font-medium">
+            <p class="block">Sender: <span class="font-normal">{{transaction["sender"]}}</span></p>
+            <p class="block">Receiver: <span class="font-normal">{{transaction["receiver"]}}</span></p>
+        </div>
+        <div class="p-10 space-y-10 font-semibold">
+            <p class="block">Amount: <span class="font-normal text-green-300">DKK {{transaction["amount"]}}</span></p>
+            <p class="block">Fee: <span class="font-normal text-green-400">DKK {{0.00}}</span></p>
+        </div>
+        <div class="p-10 space-y-10 font-semibold">
+            <p class="block">Date: <span class="font-normal">{{transaction["date"]}}</span></p>
+            <p class="block">End Balance: <span class="font-normal text-green-300">DKK {{'%.2f' % transaction["end_balance"]}}</span></p>
+        </div>
+    </div>
+</div>
+<div class="overflow-hidden border-b mt-10 border-gray-200 rounded-md shadow-sm">
+    <h3 class="text-xl my-4 mx-6 text-gray-500">Other transactions</h3>
+    <table class="min-w-full overflow-x-scroll divide-y divide-gray-200">
+        <thead class="bg-gray-50">
+            <tr>
+                <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                    Transaction type
+                </th>
+                <th scope="col" class="hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                    Sender
+                </th>
+                <th scope="col" class="hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                    Recipient
+                </th>
+                <th scope="col" class="hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                    Date
+                </th>
+                <th scope="col" class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase">
+                    Amount
+                </th>
+                <th scope="col" class="relative px-6 py-3">
+                    <span class="sr-only">Edit</span>
+                </th>
+            </tr>
+        </thead>
+        <tbody class="bg-white divide-y divide-gray-200">
+            {% for each in transactions|reverse %} 
+            <tr class="transition-all hover:bg-gray-100 hover:shadow-lg">
+                <td class="px-6 py-4 whitespace-nowrap">
+                    <div class="flex items-center">
+                        <div class="ml-4">
+                            <div class="text-sm text-gray-500">{{ each["type"] }}</div>
+                        </div>
+                    </div>
+                </td>
+                <td class="hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-500">{{ each["sender"] }}</div>
+                </td>
+                <td class="hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell px-6 py-4 whitespace-nowrap">
+                    <div class="text-sm text-gray-500">{{ each["receiver"] }}</div>
+                </td>
+                <td class="hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                    {{ each["date"] }}
+                </td>
+                <td class="px-6 py-4 text-sm whitespace-nowrap">
+                    {% if each["sender_id"] == session["user"]["_id"]%}
+                    <span class="inline-flex px-2 text-xs font-semibold leading-5 text-red-300">DKK -{{ '%.2f' % each["amount"] }}</span> {% else %}
+                    <span class="inline-flex px-2 text-xs font-semibold leading-5 text-green-300">DKK {{ '%.2f' % each["amount"] }}</span> {% endif %}
+
+
+
+                </td>
+            </tr>
+             {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock content %}

@@ -1,0 +1,84 @@
+{% extends "base.html" %} {% block content %}
+<div class="bg-grey-lighter flex flex-col mt-20">
+            <div class="container max-w-lg mx-auto flex-1 flex flex-col items-center justify-center px-2">
+                <div class="p-6 rounded text-black w-full">
+                <form id="reg-form">
+                <label class="block text-grey-darker text-sm mb-2" for="username">
+                    Full name
+                </label>
+                    <input style="width: 49.5%"
+                        type="text"
+                        class="shadow-xs inline-block border-grey-light p-3 pt-4 rounded mb-4"
+                        name="first_name"
+                        placeholder="First Name" required/>
+                        
+                    <input style="width: 49.5%"
+                        type="text"
+                        class="shadow-xs inline-block border-grey-light p-3 pt-4 rounded mb-4"
+                        name="last_name"
+                        placeholder="Last Name" required/>
+                        <label class="block text-grey-darker text-sm mb-2" for="username">
+                    Username
+                </label>
+                    <input 
+                        type="text"
+                        class="shadow-xs block border-grey-light w-full p-3 pt-4 rounded mb-4"
+                        name="username"
+                        placeholder="Username" required/>
+                        <label class="block text-grey-darker text-sm mb-2" for="username">
+                    Age
+                </label>
+                    <input 
+                        type="number"
+                        class="shadow-xs block border-grey-light w-full p-3 pt-4 rounded mb-4"
+                        name="age"
+                        placeholder="Age" required/>
+                        <label class="block text-grey-darker text-sm mb-2" for="username">
+                    Phone number
+                </label>
+                    <input 
+                        type="tel"
+                        pattern="[1-9]{1}[0-9]{7}"
+                        class="shadow-xs block border-grey-light w-full p-3 pt-4 rounded mb-4"
+                        name="phone_number"
+                        placeholder="Phone number" required/>
+<label class="block text-grey-darker text-sm mb-2" for="username">
+                    Email
+                </label>
+                    <input 
+                        type="email"
+                        class="shadow-xs block border-grey-light w-full p-3 rounded mb-4"
+                        name="email"
+                        autocomplete="username"
+                        placeholder="Email" required/>
+<label class="block text-grey-darker text-sm mb-2" for="username">
+                    Password
+                </label>
+                    <input 
+                        type="password"
+                        class="shadow-xs block border-grey-light w-full p-3 rounded mb-4"
+                        name="password"
+                        autocomplete="new-password"
+                        placeholder="Password" required/>
+                        <label class="block text-grey-darker text-sm mb-2" for="username">
+                    Confirm Password
+                </label>
+                    <input 
+                        type="password"
+                        class="shadow-xs block border-grey-light w-full p-3 rounded mb-4"
+                        name="confirm_password"
+                        autocomplete="new-password"
+                        placeholder="Confirm Password" required/><input id="csrf_token" type="hidden" name="csrf_token" value="{{ csrf_token() }}"/>
+                    <p class="text-red-700" id="password-error"></p>
+                     <button id="submit-btn"
+                        type="submit"
+                        class="w-full text-center py-3 rounded bg-green-500 text-white hover:bg-green-dark focus:outline-none my-1"
+                    >Create Account</button>
+                </form>
+  </div>
+
+            </div>
+        </div>
+<script src="{{url_for('static', filename='js/ajax.js')}}"></script>
+<script src="{{url_for('static', filename='js/register.js')}}"></script>
+{% endblock content %}

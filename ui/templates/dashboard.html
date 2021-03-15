@@ -1,0 +1,208 @@
+{% extends "base.html" %} {% block content %}
+<div class="flex flex-col mt-10">
+   <div class="table-cell min-w-full py-2 align-middle sm:px-6 lg:px-8">
+      <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+         <div class="lg:grid lg:grid-cols-3">
+            <div>
+               <div class="rounded px-8 lg:pt-6 lg:pb-8 mb-4 flex flex-col mx-auto max-w-lg">
+                  <form id="transfer-form">
+                     <div class="mb-4">
+                        <label class="block text-grey-darker text-sm mb-2" for="username">
+                        Recipient's email
+                        </label>
+                        <input class="shadow-xs appearance-none rounded w-full py-2 px-3 text-grey-darker" id="email" name="email" type="text" placeholder="Email">
+                     </div>
+                     <div class="mb-2">
+                        <label class="block text-grey-darker text-sm mb-2" for="password">
+                        Amount
+                        </label>
+                        <input class="shadow-xs appearance-none border-red rounded w-full py-2 px-3 text-grey-darker mb-3" name="amount" id="amount" type="number" placeholder="Amount">
+                        <input type="hidden" id="csrf_token" name="csrf_token" value="{{ csrf_token() }}"/>
+                        
+                     </div>
+                     <div class="flex items-center justify-start">
+                        <button id="send-btn" class="bg-green-400 hover:bg-green-500 text-white py-2 px-4 rounded mr-4" type="button">
+                        Send
+                        </button>
+                     </div><p class="text-red-300 lg:my-4 invisible" id="transfer-error"></p>
+                  </form>
+               </div>
+            </div>
+            <div class="col-span-2">
+               <div class="rounded px-8 lg:pt-6 lg:pb-8 lg:mb-4 flex flex-col mt-6">
+                  <div class="grid gap-6 mb-8 md:grid-cols-2 xl:grid-cols-2">
+                     <div
+                        class="min-w-0 rounded-lg shadow-xs overflow-hidden bg-white dark:bg-gray-800"
+                        >
+                        <div class="p-4 flex items-center">
+                          <div
+                              class="p-3 rounded-full text-green-500 dark:text-green-100 bg-green-100 dark:bg-green-500 mr-4"
+                              >
+                              <svg fill="currentColor" viewBox="0 0 20 20" class="w-5 h-5">
+                                 <path
+                                    fill-rule="evenodd"
+                                    d="M4 4a2 2 0 00-2 2v4a2 2 0 002 2V6h10a2 2 0 00-2-2H4zm2 6a2 2 0 012-2h8a2 2 0 012 2v4a2 2 0 01-2 2H8a2 2 0 01-2-2v-4zm6 4a2 2 0 100-4 2 2 0 000 4z"
+                                    clip-rule="evenodd"
+                                    ></path>
+                              </svg>
+                           </div>
+                           <div>
+                              <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
+                                 Account balance
+                              </p>
+                              <p class="text-lg font-semibold text-gray-600 dark:text-gray-200">
+                                 DKK <span id="amount-span">{{'%.2f' % balance}}</span>
+                              </p>
+                           </div>
+                        </div>
+                     </div>
+                     <div
+                        class="min-w-0 rounded-lg shadow-xs overflow-hidden bg-white dark:bg-gray-800"
+                        >
+                        <div class="p-4 flex items-center">
+                           <div
+                              class="p-3 rounded-full text-blue-500 dark:text-blue-100 bg-blue-100 dark:bg-blue-500 mr-4"
+                              >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-wallet-fill" viewBox="0 0 16 16">
+  <path d="M1.5 2A1.5 1.5 0 0 0 0 3.5v2h6a.5.5 0 0 1 .5.5c0 .253.08.644.306.958.207.288.557.542 1.194.542.637 0 .987-.254 1.194-.542.226-.314.306-.705.306-.958a.5.5 0 0 1 .5-.5h6v-2A1.5 1.5 0 0 0 14.5 2h-13z"/>
+  <path d="M16 6.5h-5.551a2.678 2.678 0 0 1-.443 1.042C9.613 8.088 8.963 8.5 8 8.5c-.963 0-1.613-.412-2.006-.958A2.679 2.679 0 0 1 5.551 6.5H0v6A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-6z"/>
+</svg>
+                           </div>
+                           <div>
+                              <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
+                                 Interest earned to date
+                              </p>
+                              <p class="text-lg font-semibold text-gray-600 dark:text-gray-200">
+                                 DKK {{'%.2f' % session["user"]["interest_earned"]}}
+                              </p>
+                           </div>
+                        </div>
+                     </div>
+                     <div
+                        class="min-w-0 rounded-lg shadow-xs overflow-hidden bg-white dark:bg-gray-800"
+                        >
+                        <div class="p-4 flex items-center">
+                           <div
+                              class="p-3 rounded-full text-green-500 dark:text-green-100 bg-green-100 dark:bg-green-500 mr-4"
+                              >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-down-left-square-fill" viewBox="0 0 16 16">
+  <path d="M2 16a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2zm8.096-10.803L6 9.293V6.525a.5.5 0 0 0-1 0V10.5a.5.5 0 0 0 .5.5h3.975a.5.5 0 0 0 0-1H6.707l4.096-4.096a.5.5 0 1 0-.707-.707z"/>
+</svg>
+                           </div>
+                           <div>
+                              <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
+                                 Income this month
+                              </p>
+                              <p id="income" class="text-lg font-semibold text-gray-600 dark:text-gray-200">
+                                 DKK {{'%.2f' % income}}
+                              </p>
+                           </div>
+                        </div>
+                     </div>
+                     <div
+                        class="min-w-0 rounded-lg shadow-xs overflow-hidden bg-white dark:bg-gray-800"
+                        >
+                        <div class="p-4 flex items-center">
+                           <div
+                              class="p-3 rounded-full text-red-500 dark:text-red-100 bg-red-100 dark:bg-red-500 mr-4"
+                              >
+                              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-up-right-square-fill" viewBox="0 0 16 16">
+  <path d="M14 0a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h12zM5.904 10.803L10 6.707v2.768a.5.5 0 0 0 1 0V5.5a.5.5 0 0 0-.5-.5H6.525a.5.5 0 1 0 0 1h2.768l-4.096 4.096a.5.5 0 0 0 .707.707z"/>
+</svg>
+                           </div>
+                           <div>
+                              <p class="mb-2 text-sm font-medium text-gray-600 dark:text-gray-400">
+                                  Expenses this month
+                              </p>
+                              <p class="text-lg font-semibold text-gray-600 dark:text-gray-200"> DKK <span id="expenses" >{{'%.2f' % expenses}} </span></p>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="overflow-hidden border-b border-gray-200 rounded-md shadow-md">
+         <h3 class="text-xl my-4 mx-6 text-gray-500">Last 5 Transactions</h3>
+            <table class="min-w-full overflow-x-scroll divide-y divide-gray-200">
+               <thead class="bg-gray-50">
+                  <tr>
+                     <th
+                        scope="col"
+                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+                        >
+                        Transaction type
+                     </th>
+                     <th
+                        scope="col"
+                        class="hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+                        >
+                        Sender
+                     </th>
+                     <th
+                        scope="col"
+                        class="hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+                        >
+                        Recipient
+                     </th>
+                     <th
+                        scope="col"
+                        class="hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+                        >
+                        Date
+                     </th>
+                     <th
+                        scope="col"
+                        class="px-6 py-3 text-xs font-medium tracking-wider text-left text-gray-500 uppercase"
+                        >
+                        Amount
+                     </th>
+                     <th scope="col" class="relative px-6 py-3">
+                        <span class="sr-only">Edit</span>
+                     </th>
+                  </tr>
+               </thead>
+               <tbody class="bg-white divide-y divide-gray-200">
+                  {% for details in transactions %} 
+                  <tr class="transition-all hover:bg-gray-100 hover:shadow-lg">
+                     <td class="px-6 py-4 whitespace-nowrap">
+                        <div class="flex items-center">
+                           <div class="ml-4">
+                              <div class="text-sm text-gray-500 transaction-type">{{ details["type"] }}</div>
+                           </div>
+                        </div>
+                     </td>
+                     <td class="hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-500 transaction-sender">{{ details["sender"] }}</div>
+                     </td>
+                     <td class="hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell px-6 py-4 whitespace-nowrap">
+                        <div class="text-sm text-gray-500 transaction-receiver">{{ details["receiver"] }}</div>
+                     </td>
+                     <td class="hidden md:table-cell lg:table-cell xl:table-cell 2xl:table-cell px-6 py-4 whitespace-nowrap text-sm text-gray-500 transaction-date">
+                        {{ details["date"] }}
+                     </td>
+                     <td class="px-6 py-4 text-sm whitespace-nowrap">
+                        {% if details["sender"] == user_id%}
+                           <span class="inline-flex px-2 text-xs font-semibold leading-5 text-red-300 transaction-amount">DKK -{{'%.2f' % details["amount"] }}</span>
+                        {% else %}
+                           <span class="inline-flex px-2 text-xs font-semibold leading-5 text-green-300 transaction-amount">DKK {{ '%.2f' % details["amount"] }}</span>
+                        {% endif %}
+                 
+                        
+                        
+                        </td>
+                     <td class="px-6 py-4 text-sm font-medium text-right whitespace-nowrap">
+                        <a href="http://localhost:5000/transactions/{{ details["id"]}}" class="text-indigo-400 hover:text-indigo-600 transaction-id">Transaction details</a>
+                     </td>
+                  </tr>
+                  {% endfor %}
+               </tbody>
+            </table>
+         </div>
+      </div>
+   </div>
+</div>
+</main>
+<script src="{{url_for('static', filename='js/ajax.js')}}"></script>
+<script src="{{url_for('static', filename='js/transfer.js')}}"></script>
+{% endblock content %}
