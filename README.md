@@ -1,5 +1,6 @@
 # Honey Bank
 
+(Will be recoded to remove redundant data and plan the system more optimal/efficient)
 Honey Bank is a simple banking web application based on Python and Flask.
 It is simulating a banking account and transactions to be used in future projects. 
  
